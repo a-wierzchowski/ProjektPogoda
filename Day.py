@@ -1,7 +1,5 @@
-import os
 from datetime import datetime
 
-import requests
 class Day:
     def __init__(self, date, country, city, description, temp, humidity, rain, pressure, wind):
         self.date = date
