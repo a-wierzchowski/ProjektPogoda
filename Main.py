@@ -1,4 +1,6 @@
 import  WeatherAPI
 conn = WeatherAPI.ConnectAPI()
 
-conn.get_respone("Brodnica")
+today = conn.get_respone("Brodnica", "PL")
+
+today.print()
