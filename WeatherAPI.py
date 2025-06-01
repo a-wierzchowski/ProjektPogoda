@@ -2,22 +2,22 @@ import os
 from datetime import datetime
 
 import requests
-import Day
+from Day import Day
 
 
-class ConnectAPI:
+class WeatherAPI:
     def __init__(self):
         self.api_key = os.environ.get("WEATHER_API_KEY")
         if not self.api_key:
             self.api_key = input("Wpisz API key do OpenWeatherMap: ")
 
 
-    def get_respone(self, city, country):
+    def get_respone(self, city, country) -> Day | None:
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city},{country}&appid={self.api_key}&units=metric&lang=pl"
         response  = requests.get(url)
         data = response.json()
         if response.status_code == 200:
-            day = Day.Day(
+            day = Day(
                 int(datetime.now().timestamp()),
                 data['sys']['country'],
                 data['name'],

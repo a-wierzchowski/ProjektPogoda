@@ -10,9 +10,16 @@ class Database:
     def __del__(self):
         self.conn.close()
 
+    def add_row_by_day(self, day):
+        self.add_row(day.date, day.country, day.city, day.description, day.temp, day.humidity, day.rain, day.pressure, day.wind)
+
     def add_row(self, date, country, city, description, temp, humidity, rain, pressure, wind):
-        self.cursor.execute(f"INSERT INTO history_weather VALUES ({date}, {country}, {city}, {description}, {temp}, {humidity}, {rain}, {pressure}, {wind})")
-        self.conn.commit()  # Zatwierdzenie zmian
+        self.cursor.execute(f"SELECT date FROM history_weather where date = {date}")
+        rows = self.cursor.fetchall()
+
+        if not rows:
+            self.cursor.execute(f"INSERT INTO history_weather VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (date, country, city, description, temp, humidity, rain, pressure, wind))
+            self.conn.commit()
 
     def read_by_day(self, date):
         self.cursor.execute("SELECT * FROM history_weather")
