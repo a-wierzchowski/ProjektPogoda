@@ -6,7 +6,8 @@ class Interface:
         self.start()
 
     def pokaz_temp(temp):
-        wynik_label.config(text=f"Aktualna temperatura: {connAPI.get_respone("Brodnica", "PL")}°C")
+        None
+        #wynik_label.config(text=f"Aktualna temperatura: {connAPI.get_respone("Brodnica", "PL")}°C")
 
     def start(self):
         root = tk.Tk()

@@ -6,16 +6,16 @@ from Interface import Interface
 
 connAPI = WeatherAPI()
 database = Database()
-interface = Interface()
+#interface = Interface()
 
 def main():
 
 
 
     weatherNow = (Day)
-    #weatherNow = connAPI.get_respone("Brodnica", "PL")
-    #weatherNow.print()
-    #database.add_row_by_day(weatherNow)
+    weatherNow = connAPI.get_respone("Torun", "PL")
+    weatherNow.print()
+    database.add_row_by_day(weatherNow)
     # database.add_row(weatherNow.date, weatherNow.country, weatherNow.city, weatherNow.description, weatherNow.temp, weatherNow.humidity, weatherNow.rain, weatherNow.pressure, weatherNow.wind)
 
     #list_days = database.read_by_day(1,5,2025,2,6,2025)
