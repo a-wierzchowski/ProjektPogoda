@@ -25,12 +25,12 @@ class Database:
             self.cursor.execute(f"INSERT INTO history_weather VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (date, country, city, description, temp, humidity, rain, pressure, wind))
             self.conn.commit()
 
-    def read_by_day(self, start_day, start_month, start_year, end_day, end_month, end_year) -> List[Day]:
+    def read_by_day(self, start_day, start_month, start_year, end_day, end_month, end_year, city) -> List[Day]:
 
         start_date = int( datetime(start_year, start_month, start_day).timestamp() )
         end_date = int( datetime(end_year, end_month, end_day).timestamp() )
 
-        self.cursor.execute("SELECT * FROM history_weather WHERE date >= ? AND date <= ?", (start_date, end_date))
+        self.cursor.execute("SELECT * FROM history_weather WHERE date >= ? AND date <= ? AND city = ?", (start_date, end_date, city))
         rows = self.cursor.fetchall()
 
         days_list = []

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 
 class Interface:
@@ -12,11 +13,28 @@ class Interface:
     def start(self):
         root = tk.Tk()
         root.title("Pogoda")
+        root.geometry('600x400+50+50')
+        root.resizable(False, False)
+        root.iconbitmap('./assets/icon.ico')
 
-        pokaz_button = tk.Button(root, text="Pokaż temperaturę", command=self.pokaz_temp)
+        wynik_label = ttk.Label(root, text="Podaj API do OpenWeatherMap")
+        wynik_label.pack()
+
+        name_entry = ttk.Entry(root)
+        name_entry.pack()
+
+        pokaz_button = ttk.Button(root, text="Dalej", command=self.pokaz_temp)
         pokaz_button.pack()
 
-        wynik_label = tk.Label(root, text="")
-        wynik_label.pack()
+        agreement_var = tk.BooleanVar()
+
+        checkbox = ttk.Checkbutton(
+            root,
+            text='Zapamiętaj',
+            variable=agreement_var
+        )
+        checkbox.pack()
+
+
 
         root.mainloop()
