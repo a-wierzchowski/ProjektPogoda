@@ -8,8 +8,22 @@ from Day import Day
 class WeatherAPI:
     def __init__(self):
         self.api_key = os.environ.get("WEATHER_API_KEY")
-        if not self.api_key:
-            self.api_key = input("Wpisz API key do OpenWeatherMap: ")
+
+    def set_api_key(self, api_key):
+        self.api_key = api_key
+
+    def check_api(api_key):
+        url = f"https://api.openweathermap.org/data/2.5/weather?q=London&appid={api_key}"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            return True
+
+        return False
+
+    def is_configured(self):
+        return bool(self.api_key)
+
 
 
     def get_respone(self, city, country) -> Day | None:

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>480</width>
     <height>480</height>
    </rect>
   </property>
@@ -30,6 +30,9 @@
    </property>
   </widget>
   <widget class="QLabel" name="label">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -42,7 +45,7 @@
     <string>Test</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="checkbox">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -55,7 +58,7 @@
     <string>CheckBox</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="input">
    <property name="geometry">
     <rect>
      <x>250</x>
