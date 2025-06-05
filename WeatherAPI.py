@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from dotenv import load_dotenv
+from dotenv import load_dotenv, unset_key, set_key
 
 import requests
 from Day import Day
@@ -11,9 +11,10 @@ class WeatherAPI:
         load_dotenv()
         self.api_key = os.getenv("WEATHER_API_KEY")
 
-    def set_api_key(self, api_key):
-        with open(".env", "w") as f:
-            f.write(f"WEATHER_API_KEY={api_key}\n")
+    def set_api_key(self, api_key, save):
+        if save:
+            set_key(".env", "WEATHER_API_KEY", api_key)
+        self.api_key = api_key
 
     def check_api(delf, api_key):
         url = f"https://api.openweathermap.org/data/2.5/weather?q=London&appid={api_key}"
@@ -26,6 +27,11 @@ class WeatherAPI:
 
     def is_configured(self):
         return bool(self.api_key)
+
+    def remove_api_key(self):
+        self.api_key = ""
+        unset_key(".env", "WEATHER_API_KEY")
+
 
 
 

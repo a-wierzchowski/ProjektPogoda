@@ -12,12 +12,12 @@ class Day:
         self.pressure = pressure
         self.wind = round(wind * 3.6, 2) # przeliczenie z  m/s na km/h
 
-    def print(self):
-        print(f"Data:\t\t {datetime.fromtimestamp(self.date)}")
-        print(f"Miejsce:\t {self.country} {self.city}")
-        print(f"Niebo:\t\t {self.description}")
-        print(f"Temperatura: {self.temp}°C")
-        print(f"Wilgotność:\t {self.humidity} %")
-        print(f"Deszcz:\t\t {self.rain} mm")
-        print(f"Ciśnienie:\t {self.pressure} hPa ")
-        print(f"Wiatr:\t\t {self.wind} km/h")
+    def to_string(self) -> str:
+        return (f"Data:\t\t {datetime.fromtimestamp(self.date)}\n"
+                f"Miejsce:\t\t {self.country} {self.city}\n"
+                f"Niebo:\t\t {self.description}\n"
+                f"Temperatura:\t {self.temp}°C\n"
+                f"Wilgotność:\t {self.humidity} %\n"
+                f"Deszcz:\t\t {self.rain} mm\n"
+                f"Ciśnienie:\t\t {self.pressure} hPa\n"
+                f"Wiatr:\t\t {self.wind} km/h")
