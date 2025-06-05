@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 
 import requests
 from Day import Day
@@ -7,12 +8,14 @@ from Day import Day
 
 class WeatherAPI:
     def __init__(self):
-        self.api_key = os.environ.get("WEATHER_API_KEY")
+        load_dotenv()
+        self.api_key = os.getenv("WEATHER_API_KEY")
 
     def set_api_key(self, api_key):
-        self.api_key = api_key
+        with open(".env", "w") as f:
+            f.write(f"WEATHER_API_KEY={api_key}\n")
 
-    def check_api(api_key):
+    def check_api(delf, api_key):
         url = f"https://api.openweathermap.org/data/2.5/weather?q=London&appid={api_key}"
         response = requests.get(url)
 

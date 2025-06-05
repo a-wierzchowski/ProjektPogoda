@@ -162,7 +162,7 @@
           <string>Kraj</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="api_text_6">
+        <widget class="QLineEdit" name="country_text">
          <property name="geometry">
           <rect>
            <x>18</x>
@@ -195,7 +195,7 @@
           <string>Miasto</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="api_text_2">
+        <widget class="QLineEdit" name="city_text">
          <property name="geometry">
           <rect>
            <x>18</x>
@@ -208,7 +208,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="findButton">
         <property name="enabled">
          <bool>true</bool>
         </property>

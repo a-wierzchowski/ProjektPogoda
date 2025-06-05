@@ -4,3 +4,4 @@ matplotlib
 seaborn
 datetime
 PyQt5
+dotenv
