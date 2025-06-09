@@ -3,17 +3,19 @@ import os
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QIcon
 from dotenv import set_key, load_dotenv, unset_key
-
 from Database import Database
 from WeatherAPI import WeatherAPI
 from ChartCanvas import ChartCanvas
 from Charts import Charts
 from Day import Day
+from assets.ui_mainwindow import Ui_MainWindow
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("./assets/MainWindow.ui", self)  # Ładowanie .ui
+        #uic.loadUi("./assets/MainWindow.ui", self)  # Ładowanie .ui
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
         self.setWindowTitle("Pogoda")
         self.setWindowIcon(QIcon("./assets/icon.ico"))
 
@@ -35,8 +37,8 @@ class MyApp(QtWidgets.QMainWindow):
         self.chart_temp = self.findChild(QtWidgets.QWidget, "chart_widget")
 
         #Widget
-        self.chart_canvas = ChartCanvas(self.chart_widget)
-        layout = QtWidgets.QVBoxLayout(self.chart_widget)
+        self.chart_canvas = ChartCanvas(self.chart_temp)
+        layout = QtWidgets.QVBoxLayout(self.chart_temp)
         layout.addWidget(self.chart_canvas)
 
         #Triggery
@@ -52,11 +54,11 @@ class MyApp(QtWidgets.QMainWindow):
         if self.weather_api.is_configured():
             self.switch_to_find_window()
         else:
-            self.stackedWidget.setCurrentIndex(0)
+            self.ui.stackedWidget.setCurrentIndex(0)
 
         self.show()
 
-    #Przycisk w Window API
+    #Przycisk w ekranie API
     def window_api_button(self):
 
         api_key = self.api_input.text()
@@ -75,6 +77,7 @@ class MyApp(QtWidgets.QMainWindow):
 
         self.switch_to_find_window()
 
+    #Przejście do ekranu wyboru lokalizacji lub jego pominięcie
     def switch_to_find_window(self):
         load_dotenv()
         self.city = os.getenv("CITY")
@@ -83,7 +86,7 @@ class MyApp(QtWidgets.QMainWindow):
             weatherNow = self.weather_api.get_respone(self.city, self.country)
             self.switch_to_weather_page(weatherNow)
             return
-        self.stackedWidget.setCurrentIndex(1)
+        self.ui.stackedWidget.setCurrentIndex(1)
 
     #Przycisk w szukaniu miasta
     def window_find_button(self):
@@ -100,9 +103,10 @@ class MyApp(QtWidgets.QMainWindow):
             set_key(".env", "COUNTRY", self.country)
             self.switch_to_weather_page(weatherNow)
 
+    #Przejście do ekranu głównego
     def switch_to_weather_page(self, weatherNow):
         self.database.add_row_by_day(weatherNow)
-        self.stackedWidget.setCurrentIndex(2)
+        self.ui.stackedWidget.setCurrentIndex(2)
         self.weather_label.setText(weatherNow.to_string())
 
         #list_days = self.database.read_by_day(1,5,2025,20,6,2025, weatherNow.city)
@@ -111,15 +115,18 @@ class MyApp(QtWidgets.QMainWindow):
             charts = Charts(list_days)
             charts.draw_temperature_chart(self.chart_canvas)
 
+    #Przycisk do ekranie API w ekranie głównym
     def window_button_change_api(self):
         self.weather_api.remove_api_key()
-        self.stackedWidget.setCurrentIndex(0)
+        self.ui.stackedWidget.setCurrentIndex(0)
 
+    #Przycisk do wyboru lokalizacji w ekranie głównym
     def window_button_change_city(self):
         unset_key(".env", "CITY")
         unset_key(".env", "COUNTRY")
-        self.stackedWidget.setCurrentIndex(1)
+        self.ui.stackedWidget.setCurrentIndex(1)
 
+    #Przycisk Odświerz w ekranie głównym
     def window_button_refresh(self):
         weatherNow = self.weather_api.get_respone(self.city, self.country)
         self.switch_to_weather_page(weatherNow)
