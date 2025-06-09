@@ -285,14 +285,24 @@
      <widget class="QLabel" name="pogoda_text">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>190</y>
+        <x>260</x>
+        <y>20</y>
         <width>241</width>
-        <height>211</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Aktualna Pogoda&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="chart_widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>601</width>
+        <height>301</height>
+       </rect>
       </property>
      </widget>
     </widget>

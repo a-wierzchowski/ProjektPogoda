@@ -54,5 +54,4 @@ class WeatherAPI:
             return day
 
         else:
-            print("Błąd:", data.get("message", "Nieznany błąd"))
             return None

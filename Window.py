@@ -1,16 +1,21 @@
 import sys
 import os
 from PyQt5 import QtWidgets, uic
-from dotenv import set_key, load_dotenv
+from PyQt5.QtGui import QIcon
+from dotenv import set_key, load_dotenv, unset_key
 
 from Database import Database
 from WeatherAPI import WeatherAPI
+from ChartCanvas import ChartCanvas
+from Charts import Charts
 from Day import Day
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("./assets/MainWindow.ui", self)  # Ładowanie .ui
+        self.setWindowTitle("Pogoda")
+        self.setWindowIcon(QIcon("./assets/icon.ico"))
 
         # Deklaracje:
         ### Okno API (0)
@@ -27,6 +32,12 @@ class MyApp(QtWidgets.QMainWindow):
         self.button_change_api = self.findChild(QtWidgets.QPushButton, "change_api_button")
         self.button_change_city = self.findChild(QtWidgets.QPushButton, "change_city_button")
         self.button_refresh = self.findChild(QtWidgets.QPushButton, "refresh_button")
+        self.chart_temp = self.findChild(QtWidgets.QWidget, "chart_widget")
+
+        #Widget
+        self.chart_canvas = ChartCanvas(self.chart_widget)
+        layout = QtWidgets.QVBoxLayout(self.chart_widget)
+        layout.addWidget(self.chart_canvas)
 
         #Triggery
         self.button_next.clicked.connect(self.window_api_button)
@@ -79,28 +90,40 @@ class MyApp(QtWidgets.QMainWindow):
         self.city = self.city_input.text()
         self.country = self.country_input.text()
 
-        set_key(".env", "CITY", self.city)
-        set_key(".env", "COUNTRY", self.country)
-
+        weatherNow = (Day)
         weatherNow = self.weather_api.get_respone(self.city, self.country)
-        #self.database.add_row_by_day(weatherNow)
 
-        self.switch_to_weather_page(weatherNow)
+        if not weatherNow:
+            QtWidgets.QMessageBox.warning(self, "Błąd", "Nie znaleziono podanej lokalizacji")
+        else:
+            set_key(".env", "CITY", self.city)
+            set_key(".env", "COUNTRY", self.country)
+            self.switch_to_weather_page(weatherNow)
 
     def switch_to_weather_page(self, weatherNow):
+        self.database.add_row_by_day(weatherNow)
         self.stackedWidget.setCurrentIndex(2)
         self.weather_label.setText(weatherNow.to_string())
+
+        #list_days = self.database.read_by_day(1,5,2025,20,6,2025, weatherNow.city)
+        list_days = self.database.read_by_day(weatherNow.date, weatherNow.city, weatherNow.country)
+        if list_days:
+            charts = Charts(list_days)
+            charts.draw_temperature_chart(self.chart_canvas)
 
     def window_button_change_api(self):
         self.weather_api.remove_api_key()
         self.stackedWidget.setCurrentIndex(0)
 
     def window_button_change_city(self):
+        unset_key(".env", "CITY")
+        unset_key(".env", "COUNTRY")
         self.stackedWidget.setCurrentIndex(1)
 
     def window_button_refresh(self):
         weatherNow = self.weather_api.get_respone(self.city, self.country)
-        self.switch_to_weather_page(weatherNow.to_string())
+        self.switch_to_weather_page(weatherNow)
+
 
 if __name__ == "__main__":
 
